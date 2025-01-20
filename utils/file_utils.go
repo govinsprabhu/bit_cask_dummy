@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
@@ -37,12 +38,12 @@ func ReadFromFileAtPosition(filename string, position int64) (string, error) {
 		return "", fmt.Errorf("error seeking file: %v", err)
 	}
 
-	buf := make([]byte, 1024)
-	n, err := file.Read(buf)
+	reader := bufio.NewReader(file)
+	line, err := reader.ReadString('\n')
 	if err != nil {
 		return "", fmt.Errorf("error reading file: %v", err)
 	}
-	return string(buf[:n]), nil
+	return line, nil
 }
 
 func MarkDelete(filename, key string) error {
